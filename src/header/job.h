@@ -18,10 +18,10 @@
 
 class Job:public base{
 
+	public:
 	string date,name,client,job_id,comment;
 	string checker_name,engineer_name,approved_name,checker_date;
 	string ref,part,rev,approved_date,type,title;
-	public:
 	  
 	  /*!
 			\brief This member function is used to initialize job property 

@@ -44,4 +44,8 @@ file*
 Sim_site/Sim/migrations/*
 *.pyc
 settings.py
+*.std
+grammar.output
+grammar.tab.*
+lex.yy.c
 
