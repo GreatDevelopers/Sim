@@ -26,13 +26,9 @@ class Structure *mainstructure;
 %union {
     double dval;
     int ival;
-<<<<<<< HEAD
     char *job_detail; 
     char *chval;
     char *material_detail;
-=======
-    char *ch;
->>>>>>> 70e7ff6da354ba341f0cbcb8eea14b1b82d46518
     class Joint *joint;
     class vectJoint *joints;
     class Job* job;
@@ -46,7 +42,6 @@ class Structure *mainstructure;
 %token JOB_NAME JOB_CLIENT JOB_NO JOB_REV JOB_PART JOB_REF JOB_COMMENT
 %token APPROVED_DATE CHECKER_DATE APPROVED_NAME CHECKER_NAME 
 %token ENGINEER_NAME ENGINEER_DATE 
-<<<<<<< HEAD
 %token MEMBER_PROP TO PRIS YD ZD
 %token ISOTROPIC E POISSON DENSITY ALPHA DAMP TYPE STRENGTH G 
 %token SUPPORTS GENERATE PINNED FIXED BUT ENFORCED FX FY FZ MX MY MZ KFX
@@ -55,11 +50,6 @@ class Structure *mainstructure;
 %token <material_detail> MATERIAL_JOB_REST
 %token <chval> STRING
 %token UNIT
-=======
-%token <ch> REST
-%token UNIT
-
->>>>>>> 70e7ff6da354ba341f0cbcb8eea14b1b82d46518
 %type <joint> points
 %type <joints> number
 %type <joints> joint_coordinates
@@ -72,7 +62,6 @@ class Structure *mainstructure;
 %%
 
 structure:
-<<<<<<< HEAD
     | structure end
 {/*    | UNIT REST structure {mainstructure->unit=std::string($2); */ }
     | job structure {/*mainstructure->job=*$1; */} 
@@ -132,51 +121,7 @@ member:
        // cout<<"member: "<<$1<<" "<<$2<<" "<<$3<<endl;
          } 
 
-=======
-	| structure end
-	| UNIT REST structure {mainstructure->unit=std::string($2);  }
-	| job structure {mainstructure->job=*$1; } 
-	| joint_coordinates structure {mainstructure->job_joints=*$1; }
- 	| Member structure { mainstructure->job_members=*$1; }
-	;
 
-job: 
-	| JOB_NAME string job{$$->name=$2; }
-	| JOB_CLIENT string job{ $$->client = $2;}
-	| JOB_NO string job{ $$->job_id = $2;}
-	| JOB_REV string job{ $$->rev = $2;}
-	| JOB_PART string job{ $$->part = $2;}
-	| JOB_REF string job{ $$->ref = $2;}
-	| JOB_COMMENT string job{ $$->comment = $2;}
-	| APPROVED_DATE string job{$$->approved_date=$2; }
-	| CHECKER_DATE string job{ $$->checker_date= $2;}
-	| APPROVED_NAME string job{ $$->approved_name  = $2;}
-	| CHECKER_NAME string job{ $$->CHECKERNAME = $2;}
-	| ENGINEER_NAME string job{ $$->engineer_name = $2;}
-	| ENGINEER_DATE string job{ $$->date = $2;}
-	;
-
-Member:
-	| member ';' end Member { 
-		Member m;
-		while($1->list.size()!=1){
-			int i =$1->list.back();
-			m.joint_id.push_back(i);
-			$1->list.pop_back();
-		}
-		m.id= $1->list.back();
-		$$->list.push_back(m); 
-		}
-	;
-
-member: 
-	| FLOAT member { $$->list.push_back($1); } 
-
-string:
-	REST string { $$=$1+$2; }
->>>>>>> 70e7ff6da354ba341f0cbcb8eea14b1b82d46518
-
- 
 joint_coordinates: 
     | JOINT '\n' number { $$=$3; }
     ;
@@ -187,7 +132,6 @@ number:
 
 points:
     |FLOAT FLOAT FLOAT FLOAT 
-<<<<<<< HEAD
     {/*cout<<$1<<" "<<$2<<" "<<$3<<" "<<$4<<endl;
         Joint *joint = new Joint();  
         joint->id=$1;
@@ -196,16 +140,6 @@ points:
         joint->z=$4;
         $$=joint;*/ 
     }
-=======
-	{cout<<$1<<" "<<$2<<" "<<$3<<" "<<$4<<endl;
-		Joint *joint = new Joint();  
-		joint->id=$1;
-    		joint->x=$2; 
-		joint->y=$3; 
-		joint->z=$4;
-		$$=joint; 
-	}
->>>>>>> 70e7ff6da354ba341f0cbcb8eea14b1b82d46518
     ;
 
 end:
@@ -281,11 +215,7 @@ supports_spring_specs:
 int main(int, char**) {
     // open a file handle to a particular file:
     mainstructure=new Structure();
-<<<<<<< HEAD
     FILE *myfile = fopen("aa.std", "r");
-=======
-    FILE *myfile = fopen("a.std", "r");
->>>>>>> 70e7ff6da354ba341f0cbcb8eea14b1b82d46518
     // make sure it is valid:    int id;
     double x, y, z;
     if (!myfile) {
@@ -299,12 +229,7 @@ int main(int, char**) {
     do {
         yyparse();
     } while (!feof(yyin));
-<<<<<<< HEAD
     
-=======
-	mainstructure->print();
-	
->>>>>>> 70e7ff6da354ba341f0cbcb8eea14b1b82d46518
 
 }
 
