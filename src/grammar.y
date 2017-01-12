@@ -66,7 +66,7 @@ class Structure *mainstructure;
 structure:
     | structure end
 {/*    | UNIT REST structure {mainstructure->unit=std::string($2); */ }
-    | job structure {/*mainstructure->job=*$1; */} 
+    | job structure {mainstructure->job=*$1;} 
     | joint_coordinates structure {/*mainstructure->job_joints=*$1;*/ }
     | member_coordinates structure {/* mainstructure->job_members=*$1;*/ }
     | material_job structure
