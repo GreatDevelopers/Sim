@@ -30,12 +30,12 @@ int main(int argc ,char *argv[]){
 		return 1;
 	}
 	// calling the structure 
-	Structure s(file);
+//	Structure s(file);
 	
 	// printing the structure information 
 	file.close();
-	s.print();
-	s.insert();
+//	s.print();
+//	s.insert();
 
 	return 0;	
 }

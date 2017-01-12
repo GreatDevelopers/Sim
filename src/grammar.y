@@ -38,7 +38,7 @@ class Structure *mainstructure;
 
 
 %token <dval> FLOAT
-%token JOINT MEMBER
+%token JOINT MEMBER_INCIDENCES
 %token JOB_NAME JOB_CLIENT JOB_NO JOB_REV JOB_PART JOB_REF JOB_COMMENT
 %token APPROVED_DATE CHECKER_DATE APPROVED_NAME CHECKER_NAME 
 %token ENGINEER_NAME ENGINEER_DATE 
@@ -46,6 +46,8 @@ class Structure *mainstructure;
 %token ISOTROPIC E POISSON DENSITY ALPHA DAMP TYPE STRENGTH G 
 %token SUPPORTS GENERATE PINNED FIXED BUT ENFORCED FX FY FZ MX MY MZ KFX
 %token KFY KFZ KMX KMY KMZ
+%token CONSTANTS MEMBER MATERIAL ALL BETA ANGLE RANGLE 
+%token CDAMP BEAM PLATE SOLID REF REFJT REFVECTOR
 %token <job_detail> REST
 %token <material_detail> MATERIAL_JOB_REST
 %token <chval> STRING
@@ -70,9 +72,10 @@ structure:
     | material_job structure
     | member_prop structure
     | supports structure
+    | constants structure
     ;
 job:                                                                    
-    | JOB_NAME REST end job {cout << "job name " << $2<<endl;/*$$->name=$2;*/ }
+    | JOB_NAME REST end job {cout << "job name " << $2<<endl; $$->name=$2;}
     | JOB_CLIENT REST end job{cout << "job client " << $2<<endl; /*$$->client = $2;*/}
     | JOB_NO REST end job{cout << "job no " << $2<<endl; /*$$->job_id = $2;*/}
     | JOB_REV REST end job{cout << "job rev " << $2 << endl; /* $$->rev = $2;*/}
@@ -101,7 +104,7 @@ material_job:
 
 
 member_coordinates:
-    | MEMBER '\n' Member {}  
+    | MEMBER_INCIDENCES '\n' Member {}  
 
 Member:
     | member ';' end Member { 
@@ -209,6 +212,47 @@ supports_spring_specs:
     | KMX FLOAT supports_spring_specs
     | KMY FLOAT supports_spring_specs
     | KMZ FLOAT supports_spring_specs
+    ;
+
+constants:
+    | CONSTANTS '\n' constants_group
+    ;
+
+constants_group:
+    | MATERIAL STRING constants_material end constants_group
+    | E constants_group_f end constants_group
+    | G constants_group_f end constants_group
+    | POISSON constants_group_f end constants_group
+    | DENSITY constants_group_f end constants_group
+    | BETA constants_group_f end constants_group
+    | BETA ANGLE end constants_group 
+    | BETA RANGLE end constants_group 
+    | ALPHA constants_group_f end constants_group
+    | CDAMP constants_group_f end constants_group
+    | MEMBER constants_member_list end constants_group  
+    | MEMBER BEAM end constants_group
+    | MEMBER PLATE end constants_group
+    | MEMBER SOLID end constants_group
+    | MEMBER ALL end constants_group
+    ;
+
+constants_material:
+    | MEMBER constants_material_member 
+    | ALL 
+    ;
+
+constants_material_member:
+    | FLOAT constants_material_member { cout << $1 << endl; }
+    | FLOAT TO FLOAT constants_material_member { cout << $1 << " " << $3 << endl; }
+    ;
+constants_group_f: STRING
+    | FLOAT
+    ;
+
+
+constants_member_list:
+    | FLOAT constants_member_list { cout << $1 << endl; }
+    | FLOAT TO FLOAT constants_member_list { cout << $1 << " " << $3 << endl; }
     ;
 
 %%

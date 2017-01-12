@@ -47,7 +47,7 @@ std::string material_data;
     return UNIT; 
     }
 
-"MEMBER INCIDENCES" { return MEMBER; }
+"MEMBER INCIDENCES" { return MEMBER_INCIDENCES; }
 
 \n  { return yytext[0]; }
 
@@ -106,13 +106,34 @@ std::string material_data;
 "KMY" { return KMY; }
 "KMZ" { return KMZ; }
 
+"CONSTANTS"|"CON"|"CONS"|"CONST"|"CONSTA"|"CONSTAN"|"CONSTANT" { return CONSTANTS; }
+
+"MEMBER"|"MEM"|"MEMB"|"MEMBE" { return MEMBER; }
+
+"MATERIAL"|"MAT"|"MATE"|"MATER"|"MATERI"|"MATERIA" { return MATERIAL; }
+"ALL" { return ALL; }
+"E" { return E; }
+"G" { return G; }
+"DENSITY"|"DEN"|"DENS"|"DENSI"|"DENSIT" { return DENSITY; }
+"BETA" { return BETA; }
+"ANGLE" { return ANGLE; }
+"RANGLE" { return RANGLE; }
+"ALPHA"|"ALP"|"ALPH" { return ALPHA; }
+"CDAMP"|"CDA"|"CDAM" { return CDAMP; }
+"BEAM"|"BEA" { return BEAM; }
+"PLATE"|"PLA"|"PLAT" { return PLATE; }
+"SOLID"|"SOL"|"SOLI" { return SOLID; }
+"REF" { return REF; }
+"REFJT" { return REFJT; }
+"REFVECTOR"|"REFV"|"REFVE"|"REFVEC"|"REFVECT"|"REFVECTO" { return REFVECTOR; }
+
 
 
 [-+]?([0-9]*\.?[0-9]+|[0-9]+\.)([e]?[-+]?([0-9]*))? { 
     yylval.dval = atof(yytext);  
     return FLOAT; 
     }
-[a-zA-Z]+ {
+[a-zA-Z0-9\-\_]+ {
     yylval.chval = yytext;
     return STRING;
     }

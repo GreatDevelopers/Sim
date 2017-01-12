@@ -23,12 +23,6 @@ class Job:public base{
 	string checker_name,engineer_name,approved_name,checker_date;
 	string ref,part,rev,approved_date,type,title;
 	  
-	  /*!
-			\brief This member function is used to initialize job property 
-			\param file file to be parsed
-    */
-		string get(fstream &file);
-		
 		/*!
 			\brief This member function is used to print job property 
     */

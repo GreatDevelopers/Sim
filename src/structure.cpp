@@ -18,9 +18,12 @@ using namespace sql;
 
 Structure::Structure(){}
     
-Structure::Structure(fstream &file)   
-{
+void Structure::insert(){
+    //job.insert();
 }
- 
 
-    
+
+void Structure::print(){
+
+	job.print();
+}    

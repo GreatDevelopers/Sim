@@ -35,32 +35,25 @@ class Load{
 class Structure: public base{
 
 	
-    vector<Material> job_material;
-	string units;
-	string widht;
-	string x;
-	vector<int> beam;
-	vector<int> column;
-	vector<MemPro> member_pr;
-	ConcreteDesign con_des;
-	string message;
-	vector <Load> load;
-	vector<MemberLoad> memberload;
-	void getSupportsTypes(string temp1,string type);
+		vector<Material> job_material;
+		string units;
+		string widht;
+		string x;
+		vector<int> beam;
+		vector<int> column;
+		vector<MemPro> member_pr;
+		ConcreteDesign con_des;
+		string message;
+		vector <Load> load;
+		vector<MemberLoad> memberload;
 	public:	
 		string width, unit, group;
 		vectJoint job_joints;
 		Memberlist job_members;
-			Job job;
-		
-		/*!
-			\brief This is constructor that is used initialize all member
-			variables.
-    	*/
-    	
-    	
-		Structure(fstream &);
+		Job job;
 		Structure();
+		void insert();
+		void print();
 	
 };
 
