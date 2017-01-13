@@ -27,8 +27,7 @@ class Load{
 	string type,title;
 	bool reduce;
 	
-	void print();
-		
+	void print();		
 };	
     
 
@@ -50,7 +49,7 @@ class Structure: public base{
 		string width, unit, group;
 		vectJoint job_joints;
 		Memberlist job_members;
-		Job job;
+		Job *job;
 		Structure();
 		void insert();
 		void print();

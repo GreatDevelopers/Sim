@@ -66,7 +66,7 @@ class Structure *mainstructure;
 structure:
     | structure end
 {/*    | UNIT REST structure {mainstructure->unit=std::string($2); */ }
-    | job structure {mainstructure->job=*$1;} 
+    | job structure {mainstructure->job=new Job();mainstructure->job=$1; } 
     | joint_coordinates structure {/*mainstructure->job_joints=*$1;*/ }
     | member_coordinates structure {/* mainstructure->job_members=*$1;*/ }
     | material_job structure
@@ -75,7 +75,7 @@ structure:
     | constants structure
     ;
 job:                                                                    
-    | JOB_NAME REST end job {cout << "job name " << $2<<endl; $$->name=$2;}
+    | JOB_NAME REST end job {cout << "job name " << $2<<endl; /*$$->name=new string(string($2));cout<<$$->name;*/}
     | JOB_CLIENT REST end job{cout << "job client " << $2<<endl; /*$$->client = $2;*/}
     | JOB_NO REST end job{cout << "job no " << $2<<endl; /*$$->job_id = $2;*/}
     | JOB_REV REST end job{cout << "job rev " << $2 << endl; /* $$->rev = $2;*/}

@@ -22,7 +22,7 @@ class Job:public base{
 	string date,name,client,job_id,comment;
 	string checker_name,engineer_name,approved_name,checker_date;
 	string ref,part,rev,approved_date,type,title;
-	  
+
 		/*!
 			\brief This member function is used to print job property 
     */

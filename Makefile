@@ -10,8 +10,8 @@ Mysql:
 	mysql -u root -p$(password) Sim<Sim.sql
 
 			
-Main: main.cpp structure.o material.o header.o joint.o member.o job.o ConcreteDesign.o
-	g++  main.cpp structure.o ConcreteDesign.o header.o job.o joint.o member.o material.o -o Main $(CFLAGS)
+Main: main.cpp structure.o material.o joint.o member.o job.o ConcreteDesign.o
+	g++  main.cpp structure.o ConcreteDesign.o job.o joint.o member.o material.o -o Main $(CFLAGS)
 	
 
 structure.o:  
@@ -32,8 +32,6 @@ material.o:
 ConcreteDesign.o:
 	g++ src/ConcreteDesign.cpp -c
 	
-header.o:
-	g++ src/header.cpp -D USER=\"$(user)\" -D PASSWORD=\"$(password)\" -c
 	
 Parse: scan.l parse.y
 	bison -d parse.y
