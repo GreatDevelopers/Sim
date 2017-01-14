@@ -26,13 +26,11 @@ class Load{
 	int id;
 	string type,title;
 	bool reduce;
-	
 	void print();		
 };	
     
 
 class Structure: public base{
-
 	
 		vector<Material> job_material;
 		string units;

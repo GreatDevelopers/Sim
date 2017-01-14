@@ -39,7 +39,7 @@ class Structure *mainstructure;
 
 %token <dval> FLOAT
 %token JOINT MEMBER_INCIDENCES
-%token JOB_NAME JOB_CLIENT JOB_NO JOB_REV JOB_PART JOB_REF JOB_COMMENT
+%token START_JOB JOB_NAME JOB_CLIENT JOB_NO JOB_REV JOB_PART JOB_REF JOB_COMMENT
 %token APPROVED_DATE CHECKER_DATE APPROVED_NAME CHECKER_NAME 
 %token ENGINEER_NAME ENGINEER_DATE 
 %token MEMBER_PROP TO PRIS YD ZD
@@ -56,8 +56,7 @@ class Structure *mainstructure;
 %type <joints> number
 %type <joints> joint_coordinates
 %type <job> job
-%type <str> string
-%type <vec> member;
+%type <vec> member
 %type <member> Member
 
 
@@ -66,28 +65,30 @@ class Structure *mainstructure;
 structure:
     | structure end
 {/*    | UNIT REST structure {mainstructure->unit=std::string($2); */ }
-    | job structure {mainstructure->job=new Job();mainstructure->job=$1; } 
-    | joint_coordinates structure {/*mainstructure->job_joints=*$1;*/ }
+    | job structure { mainstructure->job=$1; }
+    | joint_coordinates structure { mainstructure->job_joints=*$1; }
     | member_coordinates structure {/* mainstructure->job_members=*$1;*/ }
     | material_job structure
     | member_prop structure
     | supports structure
     | constants structure
     ;
-job:                                                                    
-    | JOB_NAME REST end job {cout << "job name " << $2<<endl; /*$$->name=new string(string($2));cout<<$$->name;*/}
-    | JOB_CLIENT REST end job{cout << "job client " << $2<<endl; /*$$->client = $2;*/}
-    | JOB_NO REST end job{cout << "job no " << $2<<endl; /*$$->job_id = $2;*/}
-    | JOB_REV REST end job{cout << "job rev " << $2 << endl; /* $$->rev = $2;*/}
-    | JOB_PART REST end job{cout << "job part " << $2 << endl; /* $$->part = $2;*/}
-    | JOB_REF REST end job{cout << "job ref " << $2 << endl;/* $$->ref = $2;*/}
-    | JOB_COMMENT REST end job{cout << "job comment " << $2 << endl;/* $$->comment = $2;*/}
-    | APPROVED_DATE REST end job{cout << "approved date " << $2 << endl; /*$$->approved_date=$2;*/ }
-    | CHECKER_DATE REST end job{cout << "checker date " << $2 << endl; /* $$->checker_date= $2;*/}
-    | APPROVED_NAME REST end job{cout << "approved name " << $2 << endl; /* $$->approved_name  = $2;*/}
-    | CHECKER_NAME REST end job{cout << "checker name " << $2 << endl; /* $$->CHECKERNAME = $2;*/}
-    | ENGINEER_NAME REST end job{cout << "engineer name " << $2 << endl; /* $$->engineer_name = $2;*/}
-    | ENGINEER_DATE REST end job{cout << "engineer date " << $2 << endl; /* $$->date = $2;*/}
+
+job: { }
+    | START_JOB job {$$= new Job();}
+    | JOB_NAME REST end job {cout << "job name " << $2<<endl; $$->name=string($2);}
+    | JOB_CLIENT REST end job {cout << "job client " << $2<<endl; $$->client = string($2);}
+    | JOB_NO REST end job {cout << "job no " << $2<<endl; $$->job_id = string($2);}
+    | JOB_REV REST end job {cout << "job rev " << $2 << endl; $$->rev = string($2);}
+    | JOB_PART REST end job {cout << "job part " << $2 << endl; $$->part =string($2);}
+    | JOB_REF REST end job {cout << "job ref " << $2 << endl; $$->ref = string($2);}
+    | JOB_COMMENT REST end job {cout << "job comment " << $2 << endl; $$->comment = string($2);}
+    | APPROVED_DATE REST end job {cout << "approved date " << $2 << endl; $$->approved_date=string($2); }
+    | CHECKER_DATE REST end job {cout << "checker date " << $2 << endl;   $$->checker_date= string($2);}
+    | APPROVED_NAME REST end job {cout << "approved name " << $2 << endl;  $$->approved_name  = string($2);}
+    | CHECKER_NAME REST end job {cout << "checker name " << $2 << endl;  $$->checker_name = string($2);}
+    | ENGINEER_NAME REST end job {cout << "engineer name " << $2 << endl; $$->engineer_name = string($2);}
+    | ENGINEER_DATE REST end job {cout << "engineer date " << $2 << endl; $$->date = string($2);}
     ; 
 
 material_job:
@@ -126,22 +127,22 @@ member:
 
 
 joint_coordinates: 
-    | JOINT '\n' number { $$=$3; }
+     JOINT '\n' number { $$=$3; }
     ;
 
-number:
-    |points ';' end number { /*$$->list.push_back(*$1);*/ }
+number: { }
+    |points ';' end number { $$->list.push_back(*$1); }
     ;
 
 points:
-    |FLOAT FLOAT FLOAT FLOAT 
-    {/*cout<<$1<<" "<<$2<<" "<<$3<<" "<<$4<<endl;
+    FLOAT FLOAT FLOAT FLOAT
+    {
         Joint *joint = new Joint();  
         joint->id=$1;
-            joint->x=$2; 
+        joint->x=$2;
         joint->y=$3; 
         joint->z=$4;
-        $$=joint;*/ 
+        $$=joint;
     }
     ;
 

@@ -12,7 +12,7 @@ std::string material_data;
 
 %%
 
-"START JOB INFORMATION" { BEGIN(Job); }
+"START JOB INFORMATION" { BEGIN(Job); return START_JOB; }
 
 <Job>{
 "JOB NAME" { BEGIN(rest); return  JOB_NAME; }
@@ -28,7 +28,7 @@ std::string material_data;
 "CHECKER NAME" { BEGIN(rest); return  CHECKER_NAME;  }
 "ENGINEER NAME" { BEGIN(rest); return  ENGINEER_NAME;   }
 "ENGINEER DATE" { BEGIN(rest); return ENGINEER_DATE;   }
-"END JOB INFORMATION" { BEGIN(INITIAL); }
+"END JOB INFORMATION" { BEGIN(INITIAL); } 
 }
 
 <rest>{

@@ -29,16 +29,16 @@ class JointLoad{
 class Joint: public base{
 
 	public:
-    int id;
-    double x, y, z;
-    //default value is free, and those 
-    //who are fixed will be modified in the function.
-    string support;
-    JointLoad jointload;
-    
-    Joint();
-    void print();
-    string insert(int &r,sql::Connection &con);
+		int id;
+		double x, y, z;
+		//default value is free, and those 
+		//who are fixed will be modified in the function.
+		string support;
+		JointLoad jointload;
+
+		Joint();
+		void print();
+		string insert(int &r,sql::Connection &con);
     
     	
 };
