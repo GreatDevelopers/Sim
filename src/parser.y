@@ -1,14 +1,31 @@
 
+List Rule to be used:
+List:	{ $$=new List(); }
+	| FLOAT TO FLOAT List{
+		for(int i= $1; i<=$3;i++){
+			$4->point.push_back(i);
+		}
+		$$=$4;
+	}
+	| FLOAT TO FLOAT BY FLOAT List {
+		for(int i= $1; i<=$3;i++){
+			$4->point.push_back(i);
+		}
+		$$=$4;
+	}
+	| FLOAT List{
+		$2->point.push_back($1);
+		$$=$2;
+	}	
+	;
+
+
+
 Rep:INT "*" FLOAT{
 	while($1){
 		std::cout<<FLOAT;
 	}
 	}
-
-List: List "-" "\n" List
-List :	INT List
-	| INT "TO" INT List
-	| INT "TO" INT "BY" INT list
 
 Units: 
 	length-unit 

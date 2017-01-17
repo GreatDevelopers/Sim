@@ -38,8 +38,8 @@ class Structure *mainstructure;
 
 
 %token <dval> FLOAT
-%token JOINT MEMBER_INCIDENCES
-%token START_JOB JOB_NAME JOB_CLIENT JOB_NO JOB_REV JOB_PART JOB_REF JOB_COMMENT
+%token JOINT MEMBER_INCIDENCES BY
+%token END_JOB JOB_NAME JOB_CLIENT JOB_NO JOB_REV JOB_PART JOB_REF JOB_COMMENT
 %token APPROVED_DATE CHECKER_DATE APPROVED_NAME CHECKER_NAME 
 %token ENGINEER_NAME ENGINEER_DATE 
 %token MEMBER_PROP TO PRIS YD ZD
@@ -62,11 +62,10 @@ class Structure *mainstructure;
 
 %%
 
-structure:
-    | structure end
-{/*    | UNIT REST structure {mainstructure->unit=std::string($2); */ }
-    | job structure { mainstructure->job=$1; }
-    | joint_coordinates structure { mainstructure->job_joints=*$1; }
+structure: end
+    | UNIT REST structure { mainstructure->unit=std::string($2); }
+    | job structure { mainstructure->job=$1;}
+    | joint_coordinates structure { mainstructure->job_joints=*$1;}
     | member_coordinates structure {/* mainstructure->job_members=*$1;*/ }
     | material_job structure
     | member_prop structure
@@ -74,22 +73,22 @@ structure:
     | constants structure
     ;
 
-job: { }
-    | START_JOB job {$$= new Job();}
-    | JOB_NAME REST end job {cout << "job name " << $2<<endl; $$->name=string($2);}
-    | JOB_CLIENT REST end job {cout << "job client " << $2<<endl; $$->client = string($2);}
-    | JOB_NO REST end job {cout << "job no " << $2<<endl; $$->job_id = string($2);}
-    | JOB_REV REST end job {cout << "job rev " << $2 << endl; $$->rev = string($2);}
-    | JOB_PART REST end job {cout << "job part " << $2 << endl; $$->part =string($2);}
-    | JOB_REF REST end job {cout << "job ref " << $2 << endl; $$->ref = string($2);}
-    | JOB_COMMENT REST end job {cout << "job comment " << $2 << endl; $$->comment = string($2);}
-    | APPROVED_DATE REST end job {cout << "approved date " << $2 << endl; $$->approved_date=string($2); }
-    | CHECKER_DATE REST end job {cout << "checker date " << $2 << endl;   $$->checker_date= string($2);}
-    | APPROVED_NAME REST end job {cout << "approved name " << $2 << endl;  $$->approved_name  = string($2);}
-    | CHECKER_NAME REST end job {cout << "checker name " << $2 << endl;  $$->checker_name = string($2);}
-    | ENGINEER_NAME REST end job {cout << "engineer name " << $2 << endl; $$->engineer_name = string($2);}
-    | ENGINEER_DATE REST end job {cout << "engineer date " << $2 << endl; $$->date = string($2);}
+job:  END_JOB {$$=new Job();}
+    | JOB_NAME REST end job { $4->name=string($2); $$=$4; }
+    | JOB_CLIENT REST end job { $4->client=string($2); $$=$4; }
+    | JOB_NO REST end job { $4->job_id=string($2); $$=$4; }
+    | JOB_REV REST end job { $4->rev=string($2); $$=$4; }
+    | JOB_PART REST end job { $4->part=string($2); $$=$4; }
+    | JOB_REF REST end job { $4->ref=string($2); $$=$4; }
+    | JOB_COMMENT REST end job { $4->comment=string($2); $$=$4; }
+    | APPROVED_DATE REST end job { $4->approved_date=string($2); $$=$4; }
+    | CHECKER_DATE REST end job { $4->checker_date=string($2); $$=$4; }
+    | APPROVED_NAME REST end job { $4->approved_name=string($2); $$=$4;}
+    | CHECKER_NAME REST end job { $4->checker_name=string($2); $$=$4; }
+    | ENGINEER_NAME REST end job { $4->engineer_name=string($2); $$=$4; }
+    | ENGINEER_DATE REST end job { $4->date=string($2); $$=$4; }
     ; 
+
 
 material_job:
     | ISOTROPIC MATERIAL_JOB_REST end material_job {cout << $2 << endl;} 
@@ -116,7 +115,7 @@ Member:
             $1->list.pop_back();
         }
         m.id= $1->list.back();
-        $$->list.push_back(m); 
+        $$->list.push_back(m);
     */    }
     ;
 
@@ -279,6 +278,7 @@ int main(int, char**) {
 }
 
 void yyerror(const char *s) {
+	mainstructure->print();
     cout << "EEK, parse error!  Message: " << s << endl;
     // might as well halt now:
     exit(-1);

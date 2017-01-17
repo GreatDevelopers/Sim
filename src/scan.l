@@ -8,11 +8,11 @@ std::string material_data;
 #include "grammar.tab.h"  // to get the token types that we return
 
 %}
-%x Job rest material_job material_job_rest
+%x Job rest material_job material_job_rest unit
 
 %%
 
-"START JOB INFORMATION" { BEGIN(Job); return START_JOB; }
+"START JOB INFORMATION" { BEGIN(Job); }
 
 <Job>{
 "JOB NAME" { BEGIN(rest); return  JOB_NAME; }
@@ -28,7 +28,7 @@ std::string material_data;
 "CHECKER NAME" { BEGIN(rest); return  CHECKER_NAME;  }
 "ENGINEER NAME" { BEGIN(rest); return  ENGINEER_NAME;   }
 "ENGINEER DATE" { BEGIN(rest); return ENGINEER_DATE;   }
-"END JOB INFORMATION" { BEGIN(INITIAL); } 
+"END JOB INFORMATION" { BEGIN(INITIAL);  return END_JOB; }
 }
 
 <rest>{
@@ -42,10 +42,20 @@ std::string material_data;
 }
 
 "UNIT" { 
-    BEGIN(rest);  
-    BEGIN(INITIAL); 
-    return UNIT; 
+	BEGIN(unit);
+	return UNIT;
     }
+
+<unit>{
+\n {
+	BEGIN(INITIAL);
+	yylval.job_detail=strdup(data.c_str());
+	data.clear();
+	return REST;
+   }
+.  { data+=strdup(yytext); }
+}
+
 
 "MEMBER INCIDENCES" { return MEMBER_INCIDENCES; }
 
@@ -85,6 +95,7 @@ std::string material_data;
 "PRIS" { return PRIS; }
 "YD" { return YD; }
 "ZD" { return ZD; }
+"BY" { return BY; }
 
 
 "SUPPORTS" { return SUPPORTS; }

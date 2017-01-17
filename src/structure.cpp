@@ -26,4 +26,5 @@ void Structure::insert(){
 void Structure::print(){
 
 	job->print();
-}    
+	joint.print();
+}
