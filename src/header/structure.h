@@ -49,6 +49,7 @@ class Structure: public base{
 		Memberlist job_members;
 		Job *job;
 		Structure();
+		~Structure();
 		void insert();
 		void print();
 	

@@ -273,12 +273,13 @@ int main(int, char**) {
     do {
         yyparse();
     } while (!feof(yyin));
-    
+
 
 }
 
 void yyerror(const char *s) {
 	mainstructure->print();
+	mainstructure->insert();
     cout << "EEK, parse error!  Message: " << s << endl;
     // might as well halt now:
     exit(-1);
