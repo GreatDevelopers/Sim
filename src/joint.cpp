@@ -59,4 +59,3 @@ string Joint::insert(int &r,sql::Connection &con){
 	prep_stmt->execute();
 	return message;
 }
-	

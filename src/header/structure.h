@@ -52,6 +52,7 @@ class Structure: public base{
 		~Structure();
 		void insert();
 		void print();
+        Joint *joint;
 	
 };
 

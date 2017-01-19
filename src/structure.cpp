@@ -56,7 +56,8 @@ void Structure::insert(){
 
 
 void Structure::print(){
-
-	job->print();
-	//joint.print();
+    cout << "inside structure print" << endl;
+    job->print();
+//    joint->print();
+//	joint.print();
 }
