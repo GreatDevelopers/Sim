@@ -63,7 +63,7 @@ class Structure *mainstructure;
 structure: end
     | UNIT REST structure {/* mainstructure->unit=std::string($2);*/ }
     | job structure { mainstructure->job=$1; }
-    | joint_coordinates structure {cout << "dfdfd"; mainstructure->job_joints=*$1; }
+    | joint_coordinates structure { mainstructure->job_joints=*$1; cout << "jdosjlfjdslhjldhls"; }
     | member_coordinates structure {/* mainstructure->job_members=*$1;*/ }
     | material_job structure
     | member_prop structure
@@ -123,11 +123,15 @@ member:
          } 
 
 
-joint_coordinates: JOINT '\n' number { cout << "numb ";/*$$=$3;*/ }
+joint_coordinates: JOINT '\n' number { cout << "numb "; $$=$3; }
     ;
 
 number: 
-    | points ';' end number { cout << "fdsa "; $$->list.push_back(*$1); cout << "rest" << endl; }
+    | points ';' end number { cout << "fdsa "; $$->list.push_back(*$1); cout << "rest" << endl; cout << "*$$: " << $$->list.size() << endl;
+             for(vector<Joint>::iterator i=$$->list.begin(); i<($$->list.end()); i++){
+                cout << "id: " << i->id << endl;
+                }
+    }
     ;
 
 points: 

@@ -59,3 +59,11 @@ string Joint::insert(int &r,sql::Connection &con){
 	prep_stmt->execute();
 	return message;
 }
+
+void vectJoint::print(){
+    cout << "vect joint is working" << endl;
+    for(vector<Joint>::iterator i=list.begin(); i<(list.end()); i++){
+        cout << "id: " << endl;
+     }
+}
+
