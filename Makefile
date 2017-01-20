@@ -45,3 +45,7 @@ clean: clear delmysql
 
 delmysql:
 	mysql -u $(user) -p$(password) -e "drop database Sim;"
+
+simple:
+	make clear
+	make
