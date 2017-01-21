@@ -36,14 +36,14 @@ void Structure::insert(){
 		stmt->execute("USE Sim");
 		stmt->execute("start transaction");
 		int z;
-		job->insert(z,*connection);
+        job->insert(z,*connection);
+        job_joints->insert(z, *connection);
 		//for(int i=0;i<job_joints.size();i++){
 		//	message=job_joints[i].insert(z,*connection);
 		//}
 		//insertMember(z);
 		//insertMaterial(z);
 		//insertMemberPro(z);
-
 		message="ok";
 		stmt->execute("commit");
 	}
@@ -57,8 +57,9 @@ void Structure::insert(){
 
 void Structure::print(){
     cout << "inside structure print" << endl;
-//    job->print();
-    job_joints.print();
+    job->print();
+    job_joints->print();
+
 //    joint->print();
 //	joint.print();
 }

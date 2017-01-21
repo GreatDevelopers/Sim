@@ -43,12 +43,12 @@ class Joint: public base{
     	
 };
 
-
 class vectJoint{
 	public:
 	vector<Joint> list;
 
     void print();
+    void insert(int &r,sql::Connection &con);
 };
 
 #endif

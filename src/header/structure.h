@@ -45,7 +45,7 @@ class Structure: public base{
 		vector<MemberLoad> memberload;
 	public:	
 		string width, unit, group;
-		vectJoint job_joints;
+		vectJoint *job_joints;
 		Memberlist job_members;
 		Job *job;
 		Structure();
