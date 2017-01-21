@@ -49,11 +49,25 @@ std::string material_data;
 <unit>{
 \n {
 	BEGIN(INITIAL);
-	yylval.job_detail=strdup(data.c_str());
-	data.clear();
-	return REST;
+	return yytext[0];
    }
-.  { data+=strdup(yytext); }
+
+"INCHES"|"INC"|"FEET"|"FEE" { yylval.chval=yytext; return LENGTH; }
+"FT"|"FO"|"CM"|"MET" { yylval.chval=yytext; return LENGTH; }
+"METER"|"MMS"|"DME"|"KM" { yylval.chval=yytext; return LENGTH; }
+
+
+"KIP" { yylval.chval=yytext; return FORCE; }
+"POU" { yylval.chval=yytext; return FORCE; }
+"KG" { yylval.chval=yytext; return FORCE; }
+"MTO" { yylval.chval=yytext; return FORCE; }
+"MTON" { yylval.chval=yytext; return FORCE; }
+"NEW" { yylval.chval=yytext; return FORCE; }
+"KNS" { yylval.chval=yytext; return FORCE; }
+"MNS" { yylval.chval=yytext; return FORCE; }
+"DNS" { yylval.chval=yytext; return FORCE; }
+"NEWTON" { yylval.chval=yytext; return FORCE; } 
+
 }
 
 

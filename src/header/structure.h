@@ -30,6 +30,13 @@ class Load{
 };	
     
 
+class Unit{
+	public:
+		string length;
+		string force;
+};
+
+
 class Structure: public base{
 	
 		vector<Material> job_material;
@@ -44,7 +51,8 @@ class Structure: public base{
 		vector <Load> load;
 		vector<MemberLoad> memberload;
 	public:	
-		string width, unit, group;
+		string width, group;
+		Unit *unit;
 		vectJoint *job_joints;
 		Memberlist job_members;
 		Job *job;
@@ -52,7 +60,7 @@ class Structure: public base{
 		~Structure();
 		void insert();
 		void print();
-        Joint *joint;
+        	Joint *joint;
 	
 };
 

@@ -27,36 +27,6 @@ Rep:INT "*" FLOAT{
 	}
 	}
 
-Units: 
-	length-unit 
-	|force-unit 
-	| force-unit length-unit
-	| length-unit force-unit 
-	 
-
-length-unit :
-	INCHES 
-	| FEET 
-	| FT 
-	| FO 
-	| CM 
-	| METER 
-	| MMS
-	| DME 
-	| KM 
-	
-force-unit : 
-		KIP 
-		| POU
-		| POUND 
-		| KG 
-		| MTO
-		|MTON 
-		| NEW
-		| NEWTON 
-		| KNS 
-		| MNS
-		| DNS 
 
 
 JOINT:

@@ -32,11 +32,13 @@ class Structure *mainstructure;
     class Job* job;
     class vectmem *vec;
     class Memberlist * member;
+    class Unit *unit; 
 }
 
 
 %token <dval> FLOAT
 %token JOINT MEMBER_INCIDENCES BY
+%token <chval> LENGTH FORCE
 %token END_JOB JOB_NAME JOB_CLIENT JOB_NO JOB_REV JOB_PART JOB_REF JOB_COMMENT
 %token APPROVED_DATE CHECKER_DATE APPROVED_NAME CHECKER_NAME 
 %token ENGINEER_NAME ENGINEER_DATE 
@@ -56,19 +58,24 @@ class Structure *mainstructure;
 %type <job> job
 %type <vec> member
 %type <member> Member
-
+%type <unit> unitType;
 
 %%
 
 structure: end
-    | UNIT REST structure {/* mainstructure->unit=std::string($2);*/ }
-    | job structure { mainstructure->job=$1; }
-    | joint_coordinates end {cout <<"fddsfdfs" << endl;  mainstructure->job_joints=$1; }
+    | UNIT unitType structure { mainstructure->unit=$2; }
+    | job '\n' structure { mainstructure->job=$1; }
+    | joint_coordinates end { mainstructure->job_joints=$1; }
     | member_coordinates structure {/* mainstructure->job_members=*$1;*/ }
     | material_job structure
     | member_prop structure
     | supports structure
     | constants structure
+    ;
+
+unitType: '\n' {$$= new Unit(); }
+    | LENGTH unitType { $$=$2; $$->length=string($1);} 
+    | FORCE unitType { $$=$2; $$->force=string($1); }
     ;
 
 job:  END_JOB {$$=new Job();}
@@ -270,13 +277,15 @@ int main(int, char**) {
     do {
         yyparse();
     } while (!feof(yyin));
+    mainstructure->print();
+    mainstructure->insert();
 
 
 }
 
 void yyerror(const char *s) {
-	mainstructure->print();
-	mainstructure->insert();
+    mainstructure->print();
+    mainstructure->insert();
     cout << "EEK, parse error!  Message: " << s << endl;
     // might as well halt now:
     exit(-1);
