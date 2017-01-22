@@ -47,3 +47,14 @@ void MemberLoad::print(){
 	for(int i=0;i<f.size();i++)
 		cout<<f[i]<<",";
 }
+
+void Memberlist::print(){
+    cout << "inside memberlist " << endl;
+    cout << list.size() << endl; 
+    for(vector<Member>::iterator i=list.begin(); i<=(list.end()); i++){
+        cout << "id: " << i->id << endl;
+        for(vector<int>::iterator j=i->joint_id.begin(); j<=(i->joint_id.end()); j++){
+            cout << *j << endl;
+        }
+    }
+}

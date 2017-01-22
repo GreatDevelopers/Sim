@@ -31,7 +31,8 @@ class Structure *mainstructure;
     class vectJoint *joints;
     class Job* job;
     class vectmem *vec;
-    class Memberlist * member;
+    class Member *member;
+    class Memberlist *member_list;
     class Unit *unit; 
 }
 
@@ -56,17 +57,19 @@ class Structure *mainstructure;
 %type <joints> number
 %type <joints> joint_coordinates
 %type <job> job
-%type <vec> member
-%type <member> Member
-%type <unit> unitType;
+//%type <vec> member
+%type <member> member
+%type <member_list> Member
+%type <member_list> member_coordinates
+%type <unit> unitType
 
 %%
 
 structure: end
     | UNIT unitType structure { mainstructure->unit=$2; }
     | job '\n' structure { mainstructure->job=$1; }
-    | joint_coordinates end { mainstructure->job_joints=$1; }
-    | member_coordinates structure {/* mainstructure->job_members=*$1;*/ }
+    | joint_coordinates '\n' end { mainstructure->job_joints=$1; }
+    | member_coordinates '\n' end { cout << 1234; mainstructure->job_members=$1; cout << "d"; }
     | material_job structure
     | member_prop structure
     | supports structure
@@ -108,12 +111,23 @@ material_job:
     ; 
 
 
-member_coordinates:
-    | MEMBER_INCIDENCES '\n' Member {}  
+member_coordinates: MEMBER_INCIDENCES '\n' Member {
+        $$=$3;
+        mainstructure->job_members=$$;
+        for(vector<Member>::iterator i=$3->list.begin(); i<=($3->list.end()); i++){
+            cout << "id: " << i->id << endl;
+            for(vector<int>::iterator j=i->joint_id.begin(); j<=(i->joint_id.end()); j++){
+                cout << *j << endl;
+            }
+        }
+    }
+    ;
 
-Member:
-    | member ';' end Member { 
-       /* Member m;
+Member: { $$ = new Memberlist(); }
+    | member ';' end Member {
+        $$=$4; $$->list.push_back(*$1);
+    /*
+        Member m;
         while($1->list.size()!=1){
             int i =$1->list.back();
             m.joint_id.push_back(i);
@@ -121,14 +135,19 @@ Member:
         }
         m.id= $1->list.back();
         $$->list.push_back(m);
-    */    }
+       */ }
     ;
 
-member: 
-    | FLOAT FLOAT FLOAT {/* $$->list.push_back($1);*/
+member: {}
+    | FLOAT FLOAT FLOAT { /*$$->list.push_back($1);*/
        // cout<<"member: "<<$1<<" "<<$2<<" "<<$3<<endl;
-         } 
-
+        Member *member = new Member();
+        member->id = $1;
+        member->joint_id.push_back($2);
+        member->joint_id.push_back($3);
+        $$=member;
+    }
+    ;
 
 joint_coordinates: JOINT '\n' number { $$=$3; }
     ;
@@ -285,7 +304,7 @@ int main(int, char**) {
 
 void yyerror(const char *s) {
     mainstructure->print();
-    mainstructure->insert();
+    //mainstructure->insert();
     cout << "EEK, parse error!  Message: " << s << endl;
     // might as well halt now:
     exit(-1);

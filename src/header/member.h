@@ -46,6 +46,8 @@ class vectmem{
 class Memberlist{
 	public:
 	vector<Member> list;
+
+    void print();
 };
 
 class MemPro{
