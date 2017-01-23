@@ -6,7 +6,8 @@
  *      
  *	Compiler g++
  *
- *  \author amarjeet singh kapoor
+ *  \author amarjeet singh kapoor &
+ *          Amritpal Singh
  *      
  */
 
@@ -43,11 +44,12 @@ class vectmem{
 	vector<int> list;
 };
 
-class Memberlist{
+class Memberlist:public base{
 	public:
 	vector<Member> list;
 
     void print();
+    void insert(int &z, sql::Connection &con);
 };
 
 class MemPro{

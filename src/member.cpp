@@ -6,7 +6,8 @@
  *      
  *  Compiler  g++
  *
- *  \author amarjeet singh kapoor
+ *  \author amarjeet singh kapoor &
+ *          Amritpal Singh
  *      
  */
 
@@ -36,6 +37,8 @@ void Member::print(){
     }
 }
 
+
+
 MemberLoad::MemberLoad(){
 	specCode=" ";
 	spec=0;
@@ -51,10 +54,37 @@ void MemberLoad::print(){
 void Memberlist::print(){
     cout << "inside memberlist " << endl;
     cout << list.size() << endl; 
-    for(vector<Member>::iterator i=list.begin(); i<=(list.end()); i++){
+    for(vector<Member>::iterator i=list.begin(); i!=(list.end()); i++){
         cout << "id: " << i->id << endl;
-        for(vector<int>::iterator j=i->joint_id.begin(); j<=(i->joint_id.end()); j++){
-            cout << *j << endl;
+        for(vector<int>::iterator j=i->joint_id.begin(); j!=(i->joint_id.end()); j++){
+            cout <<"Joint id: " << *j << endl;
         }
     }
+}
+
+
+void Memberlist::insert(int &z, sql::Connection &con){
+	stmt = con.createStatement();
+	string message;
+	for(vector<Member>::iterator i=list.begin(); i!=list.end(); i++){
+		prep_stmt = con.prepareStatement("INSERT INTO Member(job_id,member_id) VALUES (?,?)");
+		prep_stmt->setInt(1,z);
+		stringstream sstm;
+		sstm<<"Duplicate Member id = "<<i->id;
+		//message = sstm.str();
+		message = "Joint not Present";
+		prep_stmt->setInt(2,i->id);
+		prep_stmt->execute();
+		for(vector<int>::iterator j=i->joint_id.begin(); j!=(i->joint_id.end()); j++){
+			prep_stmt = con.prepareStatement("INSERT INTO Member_incidence(job_id,member_id,joint_id) VALUES (?,?,?)");
+			prep_stmt->setInt(1,z);
+			prep_stmt->setInt(2,i->id);
+			stringstream sstm1;
+			sstm1<<" wrong Joint id "<<*j<<" in member ="<<*j;
+			message = sstm1.str();
+			prep_stmt->setInt(3,*j);
+			prep_stmt->execute();
+		}
+	  }
+	cout << "Member incidences in inserted" << endl;
 }

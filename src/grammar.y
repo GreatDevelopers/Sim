@@ -65,11 +65,11 @@ class Structure *mainstructure;
 
 %%
 
-structure: end
+structure:
     | UNIT unitType structure { mainstructure->unit=$2; }
-    | job '\n' structure { mainstructure->job=$1; }
-    | joint_coordinates '\n' end { mainstructure->job_joints=$1; }
-    | member_coordinates '\n' end { cout << 1234; mainstructure->job_members=$1; cout << "d"; }
+    | job end structure { mainstructure->job=$1; }
+    | joint_coordinates end structure  { mainstructure->job_joints=$1; }
+    | member_coordinates end structure { mainstructure->job_members=$1; }
     | material_job structure
     | member_prop structure
     | supports structure
@@ -111,16 +111,7 @@ material_job:
     ; 
 
 
-member_coordinates: MEMBER_INCIDENCES '\n' Member {
-        $$=$3;
-        mainstructure->job_members=$$;
-        for(vector<Member>::iterator i=$3->list.begin(); i<=($3->list.end()); i++){
-            cout << "id: " << i->id << endl;
-            for(vector<int>::iterator j=i->joint_id.begin(); j<=(i->joint_id.end()); j++){
-                cout << *j << endl;
-            }
-        }
-    }
+member_coordinates: MEMBER_INCIDENCES '\n' Member { $$=$3; }
     ;
 
 Member: { $$ = new Memberlist(); }
@@ -140,7 +131,6 @@ Member: { $$ = new Memberlist(); }
 
 member: {}
     | FLOAT FLOAT FLOAT { /*$$->list.push_back($1);*/
-       // cout<<"member: "<<$1<<" "<<$2<<" "<<$3<<endl;
         Member *member = new Member();
         member->id = $1;
         member->joint_id.push_back($2);
@@ -296,14 +286,14 @@ int main(int, char**) {
     do {
         yyparse();
     } while (!feof(yyin));
-    mainstructure->print();
+    //mainstructure->print();
     mainstructure->insert();
 
 
 }
 
 void yyerror(const char *s) {
-    mainstructure->print();
+    //mainstructure->print();
     //mainstructure->insert();
     cout << "EEK, parse error!  Message: " << s << endl;
     // might as well halt now:

@@ -6,7 +6,8 @@
  *      
  *	Compiler g++
  *
- *  \author amarjeet singh kapoor 
+ *  \author amarjeet singh kapoor &
+ *          Amritpal Singh
  *      
  */
 

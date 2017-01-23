@@ -6,7 +6,8 @@
  *      
  *  Compiler  g++
  *
- *  \author amarjeet singh kapoor
+ *  \author amarjeet singh kapoor &
+ * 			Amritpal Singh
  *      
  */
 
@@ -31,13 +32,14 @@ Structure::~Structure(){
 
 void Structure::insert(){
 
-    try{
+	try{
 		string message;
 		stmt->execute("USE Sim");
 		stmt->execute("start transaction");
 		int z;
         job->insert(z,*connection);
         job_joints->insert(z, *connection);
+		job_members->insert(z,*connection);
 		//for(int i=0;i<job_joints.size();i++){
 		//	message=job_joints[i].insert(z,*connection);
 		//}
@@ -56,10 +58,7 @@ void Structure::insert(){
 
 
 void Structure::print(){
-    cout << "inside structure print" << endl;
-    //job->print();
-   //job_joints->print();
-   // job_members->print();
-//    joint->print();
-//	joint.print();
+   job->print();
+   job_joints->print();
+   job_members->print();
 }

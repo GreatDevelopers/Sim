@@ -7,6 +7,7 @@
  *  Compiler  g++
  *
  *  \author amarjeet singh kapoor
+ *			Amritpal Singh
  *      
  */
 #include "header/joint.h"
@@ -61,7 +62,6 @@ string Joint::insert(int &r,sql::Connection &con){
 }
 
 void vectJoint::print(){
-    cout << "vect joint is working" << endl;
     for(vector<Joint>::iterator i=list.begin(); i<(list.end()); i++){
         cout << "id: " << i->id << endl;
      }
@@ -69,7 +69,7 @@ void vectJoint::print(){
 
 void vectJoint::insert(int &r,sql::Connection &con){
     for(vector<Joint>::iterator i=list.begin(); i<=(list.end()); i++){
-        cout << "insert vectjoint" << endl;
         i->insert(r,con);
     }
+	cout << "Joints is inserted" << endl;
 }

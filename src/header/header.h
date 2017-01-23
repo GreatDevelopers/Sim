@@ -7,7 +7,8 @@
  *      
  *	compiler g++
  *
- *  \author amarjeet singh kapoor
+ *  \author amarjeet singh kapoor &
+ *          Amritpal Singh
  *      
  */
 #ifndef _HEADER_H_

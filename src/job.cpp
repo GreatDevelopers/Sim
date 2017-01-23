@@ -7,6 +7,7 @@
  *  Compiler  g++
  *
  *  \author amarjeet singh kapoor
+ *          Amritpal Singh
  *      
  */
 
@@ -60,4 +61,5 @@ void Job::insert(int &r,sql::Connection &con )
 	result->next();
 	r=result->getInt(1);
 	delete stmt;
+    cout << "Job is inserted" << endl;
 }
