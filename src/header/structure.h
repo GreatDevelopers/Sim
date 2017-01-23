@@ -40,7 +40,6 @@ class Unit{
 
 class Structure: public base{
 	
-		vector<Material> job_material;
 		string units;
 		string widht;
 		string x;
@@ -57,14 +56,13 @@ class Structure: public base{
 		vectJoint *job_joints;
 		Memberlist *job_members;
 		Job *job;
+        Material *job_material;
 		Structure();
 		~Structure();
 		void insert();
 		void print();
-        	Joint *joint;
+        Joint *joint;
 	
 };
 
 #endif
-
-

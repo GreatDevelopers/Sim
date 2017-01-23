@@ -15,14 +15,14 @@
 
 #include"header.h"
 
-class Material{
+class Material:public base{
 	public:
     string name, type, strength;
     double E,poisson, alpha, density, damp, G;
     
     Material();
     void print();
-    
+    string insert(int &r,sql::Connection &con);
 };
 
 #endif

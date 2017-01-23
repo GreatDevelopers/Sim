@@ -40,6 +40,7 @@ void Structure::insert(){
         job->insert(z,*connection);
         job_joints->insert(z, *connection);
 		job_members->insert(z,*connection);
+		job_material->insert(z, *connection);
 		//for(int i=0;i<job_joints.size();i++){
 		//	message=job_joints[i].insert(z,*connection);
 		//}

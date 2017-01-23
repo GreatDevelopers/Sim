@@ -33,7 +33,8 @@ class Structure *mainstructure;
     class vectmem *vec;
     class Member *member;
     class Memberlist *member_list;
-    class Unit *unit; 
+    class Unit *unit;
+    class Material *material;
 }
 
 
@@ -62,7 +63,7 @@ class Structure *mainstructure;
 %type <member_list> Member
 %type <member_list> member_coordinates
 %type <unit> unitType
-
+%type <material> material_job
 %%
 
 structure:
@@ -70,7 +71,7 @@ structure:
     | job end structure { mainstructure->job=$1; }
     | joint_coordinates end structure  { mainstructure->job_joints=$1; }
     | member_coordinates end structure { mainstructure->job_members=$1; }
-    | material_job structure
+    | material_job end structure { mainstructure->job_material=$1; }
     | member_prop structure
     | supports structure
     | constants structure
@@ -98,16 +99,16 @@ job:  END_JOB {$$=new Job();}
     ; 
 
 
-material_job:
-    | ISOTROPIC MATERIAL_JOB_REST end material_job {cout << $2 << endl;} 
-    | E MATERIAL_JOB_REST end material_job {cout << $2 << endl;}
-    | POISSON MATERIAL_JOB_REST end material_job {cout << $2 << endl;}
-    | DENSITY MATERIAL_JOB_REST end material_job {cout << $2 << endl;}
-    | ALPHA MATERIAL_JOB_REST end material_job {cout << $2 << endl;}
-    | DAMP MATERIAL_JOB_REST end material_job {cout << $2 << endl;}
-    | TYPE MATERIAL_JOB_REST end material_job {cout << $2 << endl;}
-    | STRENGTH MATERIAL_JOB_REST end material_job {cout << $2 << endl;}
-    | G MATERIAL_JOB_REST end material_job {cout << $2 << endl;}
+material_job: { $$ = new Material(); }
+    | ISOTROPIC MATERIAL_JOB_REST end material_job { $4->name=string($2); $$=$4; }
+    | E MATERIAL_JOB_REST end material_job { $4->E=atof($2); $$=$4; }
+    | POISSON MATERIAL_JOB_REST end material_job { $4->poisson=atof($2); $$=$4; }
+    | DENSITY MATERIAL_JOB_REST end material_job { $4->density=atof($2); $$=$4; }
+    | ALPHA MATERIAL_JOB_REST end material_job { $4->alpha=atof($2); $$=$4; }
+    | DAMP MATERIAL_JOB_REST end material_job { $4->damp=atof($2); $$=$4; }
+    | TYPE MATERIAL_JOB_REST end material_job { $4->type=string($2); $$=$4; }
+    | STRENGTH MATERIAL_JOB_REST end material_job { $4->strength=string($2); $$=$4; }
+    | G MATERIAL_JOB_REST end material_job { $4->G=atof($2); $$=$4; }
     ; 
 
 
@@ -163,17 +164,17 @@ end:
     ;
 
 member_prop:
-    | MEMBER_PROP member_prop_standard '\n' member_prop_group { cout << "workind" ; }
+    | MEMBER_PROP member_prop_standard '\n' member_prop_group { cout << "workind" << endl; }
     ;
 member_prop_standard:
-    | STRING {cout << $1 << endl;} 
+    | STRING {cout << $1 << endl; cout << 3 << endl; }
     ;
 member_prop_group:
-    | member_group end member_prop_group
+    | member_group end member_prop_group { cout << 2 << endl; }
     
 
 member_group:
-    | member_points PRIS member_axis  { } 
+    | member_points PRIS member_axis  { cout << 1 << endl; }
     ;
 
 member_points:
