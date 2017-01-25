@@ -46,5 +46,9 @@ class base{
 	
 };
 
-  
+class List{
+    public:
+      vector <double> list;
+};
+
 #endif

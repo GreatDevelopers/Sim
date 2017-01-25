@@ -64,4 +64,11 @@ class MemPro{
 	void print();
 };
 
+class MemProlist: public base{
+    public:
+    vector<MemPro> list; 
+	void print();
+    string insert(int &z, sql::Connection &con);
+};
+
 #endif

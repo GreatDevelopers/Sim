@@ -41,6 +41,7 @@ void Structure::insert(){
         job_joints->insert(z, *connection);
 		job_members->insert(z,*connection);
 		job_material->insert(z, *connection);
+		job_memprolist->insert(z,*connection);
 		//for(int i=0;i<job_joints.size();i++){
 		//	message=job_joints[i].insert(z,*connection);
 		//}
@@ -59,7 +60,8 @@ void Structure::insert(){
 
 
 void Structure::print(){
-   job->print();
-   job_joints->print();
-   job_members->print();
+   	job->print();
+   	job_joints->print();
+   	job_members->print();
+	job_memprolist->print();
 }

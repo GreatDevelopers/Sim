@@ -35,6 +35,9 @@ class Structure *mainstructure;
     class Memberlist *member_list;
     class Unit *unit;
     class Material *material;
+    class MemPro *mempro;
+    class MemProlist *memprolist;
+    class List *Listvec;
 }
 
 
@@ -64,6 +67,11 @@ class Structure *mainstructure;
 %type <member_list> member_coordinates
 %type <unit> unitType
 %type <material> material_job
+%type <memprolist> member_prop
+%type <memprolist> member_prop_group
+%type <mempro> member_group
+%type <mempro> member_axis
+%type <Listvec> listvec
 %%
 
 structure:
@@ -72,7 +80,7 @@ structure:
     | joint_coordinates end structure  { mainstructure->job_joints=$1; }
     | member_coordinates end structure { mainstructure->job_members=$1; }
     | material_job end structure { mainstructure->job_material=$1; }
-    | member_prop structure
+    | member_prop end structure { mainstructure->job_memprolist=$1; }
     | supports structure
     | constants structure
     ;
@@ -118,16 +126,7 @@ member_coordinates: MEMBER_INCIDENCES '\n' Member { $$=$3; }
 Member: { $$ = new Memberlist(); }
     | member ';' end Member {
         $$=$4; $$->list.push_back(*$1);
-    /*
-        Member m;
-        while($1->list.size()!=1){
-            int i =$1->list.back();
-            m.joint_id.push_back(i);
-            $1->list.pop_back();
-        }
-        m.id= $1->list.back();
-        $$->list.push_back(m);
-       */ }
+    }
     ;
 
 member: {}
@@ -147,7 +146,7 @@ number: { $$= new vectJoint(); }
     | points ';' end number { $$=$4; $$->list.push_back(*$1); }
     ;
 
-points: 
+points: {}
     | FLOAT FLOAT FLOAT FLOAT
     {   
         Joint *joint = new Joint();  
@@ -163,29 +162,49 @@ end:
     |'\n' end
     ;
 
-member_prop:
-    | MEMBER_PROP member_prop_standard '\n' member_prop_group { cout << "workind" << endl; }
-    ;
-member_prop_standard:
-    | STRING {cout << $1 << endl; cout << 3 << endl; }
-    ;
-member_prop_group:
-    | member_group end member_prop_group { cout << 2 << endl; }
-    
-
-member_group:
-    | member_points PRIS member_axis  { cout << 1 << endl; }
+member_prop: MEMBER_PROP member_prop_group { $$=$2; }
     ;
 
-member_points:
-    | FLOAT member_points { cout << $1 << endl; }
-    | FLOAT TO FLOAT member_points { cout << $1 << " " << $3 << endl; }
+member_prop_group: { $$=new MemProlist(); }
+    | STRING '\n' member_prop_group { $$=$3; }
+    | member_group end member_prop_group {
+        $3->list.push_back(*$1);
+        $$=$3;
+	}
     ;
 
-member_axis:
-    | YD FLOAT member_axis
-    | ZD FLOAT member_axis
+member_group: {}
+    | listvec PRIS member_axis {
+        $$=$3;
+        for(int i=0; i<$1->list.size(); i++){
+            $$->member_id.push_back((double)($1->list[i]));
+        }
+    }
     ;
+
+member_axis: { $$=new MemPro(); }
+    | YD FLOAT member_axis { $3->YD=$2; $$=$3; }
+    | ZD FLOAT member_axis { $3->ZD=$2; $$=$3; }
+    ;
+
+listvec:	{ $$=new List(); }
+	| FLOAT TO FLOAT listvec{
+		for(int i= $1; i<=$3;i++){
+			$4->list.push_back(i);
+		}
+		$$=$4;
+	}
+	| FLOAT TO FLOAT BY FLOAT listvec {
+		for(int i= $1; i<=$3;i++){
+			$6->list.push_back(i);
+		}
+		$$=$6;
+	}
+	| FLOAT listvec{
+		$2->list.push_back($1);
+		$$=$2;
+	}
+	;
 
 supports:
     | SUPPORTS '\n' supports_group

@@ -57,6 +57,7 @@ class Structure: public base{
 		Memberlist *job_members;
 		Job *job;
         Material *job_material;
+        MemProlist *job_memprolist;
 		Structure();
 		~Structure();
 		void insert();
