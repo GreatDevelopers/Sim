@@ -25,6 +25,7 @@ class Structure *mainstructure;
     double dval;
     int ival;
     char *job_detail; 
+    char *title;
     char *chval;
     char *material_detail;
     class Joint *joint;
@@ -54,6 +55,8 @@ class Structure *mainstructure;
 %token CONSTANTS MEMBER MATERIAL ALL BETA ANGLE RANGLE 
 %token CDAMP BEAM PLATE SOLID REF REFJT REFVECTOR
 %token <job_detail> REST
+%token <title> TITLE
+%token STAAD PLANE SPACE TRUSS FLOOR FINISH
 %token <material_detail> MATERIAL_JOB_REST
 %token <chval> STRING
 %token UNIT
@@ -73,6 +76,16 @@ class Structure *mainstructure;
 %type <mempro> member_axis
 %type <Listvec> listvec
 %%
+
+
+main: STAAD type TITLE structure FINISH end
+    ;
+
+type: PLANE
+    | SPACE
+    | TRUSS
+    | FLOOR
+    ;
 
 structure:
     | UNIT unitType structure { mainstructure->unit=$2; }
@@ -176,6 +189,7 @@ member_prop_group: { $$=new MemProlist(); }
 member_group: {}
     | listvec PRIS member_axis {
         $$=$3;
+        $$->type="PRIS";
         for(int i=0; i<$1->list.size(); i++){
             $$->member_id.push_back((double)($1->list[i]));
         }

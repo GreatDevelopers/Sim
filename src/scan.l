@@ -9,8 +9,31 @@ std::string material_data;
 
 %}
 %x Job rest material_job material_job_rest unit
+%x type type_rest
 
 %%
+
+"STAAD"|"STA"|"STAA" { BEGIN(type); return STAAD; }
+
+<type>{
+"PLANE"|"PLA"|"PLAN" { BEGIN(type_rest); return PLANE; }
+"SPACE"|"SPA"|"SPAC" { BEGIN(type_rest); return SPACE; }
+"TRUSS"|"TRU"|"TRUS" { BEGIN(type_rest); return TRUSS; }
+"FLOOR"|"FLO"|"FLOO" { BEGIN(type_rest); return FLOOR; }
+}
+
+<type_rest>{
+\n  {
+    BEGIN(INITIAL);
+    yylval.title=strdup(data.c_str());
+    data.clear();
+    return TITLE;
+    }
+. { data+=strdup(yytext); }
+}
+
+
+"FINISH" { return FINISH; }
 
 "START JOB INFORMATION" { BEGIN(Job); }
 
