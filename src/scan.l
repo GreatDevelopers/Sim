@@ -1,3 +1,15 @@
+/*!
+ *	\file scan.l
+ *
+ *	\brief  This file contains scanner code.
+ *
+ *
+ *  Compiler  flex
+ *
+ *  \author Amritpal Singh &
+ *			Amarjeet singh kapoor
+ *
+ */
 %{
 #include <cstdio>
 #include <iostream>
@@ -75,21 +87,19 @@ std::string material_data;
 	return yytext[0];
    }
 
-"INCHES"|"INC"|"FEET"|"FEE" { yylval.chval=yytext; return LENGTH; }
-"FT"|"FO"|"CM"|"MET" { yylval.chval=yytext; return LENGTH; }
+"INCHES"|"INCH"|"INCHE"|"INC"|"FEET"|"FEE" { yylval.chval=yytext; return LENGTH; }
+"FT"|"FO"|"CM"|"MET"|"METE" { yylval.chval=yytext; return LENGTH; }
 "METER"|"MMS"|"DME"|"KM" { yylval.chval=yytext; return LENGTH; }
 
 
 "KIP" { yylval.chval=yytext; return FORCE; }
-"POU" { yylval.chval=yytext; return FORCE; }
+"POU"|"POUN"|"POUND" { yylval.chval=yytext; return FORCE; }
 "KG" { yylval.chval=yytext; return FORCE; }
-"MTO" { yylval.chval=yytext; return FORCE; }
-"MTON" { yylval.chval=yytext; return FORCE; }
-"NEW" { yylval.chval=yytext; return FORCE; }
+"MTO"|"MTON" { yylval.chval=yytext; return FORCE; }
+"NEW"|"NEWT"|"NEWTO"|"NEWTON" { yylval.chval=yytext; return FORCE; }
 "KNS" { yylval.chval=yytext; return FORCE; }
 "MNS" { yylval.chval=yytext; return FORCE; }
 "DNS" { yylval.chval=yytext; return FORCE; }
-"NEWTON" { yylval.chval=yytext; return FORCE; } 
 
 }
 

@@ -1,3 +1,15 @@
+/*!
+ *	\file grammar.y
+ *
+ *	\brief  This file contains parser code.
+ *
+ *
+ *  Compiler  bison
+ *
+ *  \author Amritpal Singh &
+ *			Amarjeet singh kapoor
+ *
+ */
 %{
 #include <cstdio>
 #include <iostream>
@@ -209,7 +221,7 @@ listvec:	{ $$=new List(); }
 		$$=$4;
 	}
 	| FLOAT TO FLOAT BY FLOAT listvec {
-		for(int i= $1; i<=$3;i++){
+		for(int i= $1; i<=$3;i=i+$5){
 			$6->list.push_back(i);
 		}
 		$$=$6;
